@@ -1,10 +1,5 @@
-# Computer Vision Assignment - README
-
-## 📋 Assignment Overview
-
-**Course:** CCE Computer Vision  
-**Institution:** Alexandria University - Faculty of Engineering  
-**Due Date:** October 21, 2025
+# Computer Vision Assignment
+## Assignment Overview
 
 This assignment implements two fundamental computer vision techniques:
 1. **Image Cartoonization** - Transforming photos into cartoon-style images
@@ -12,7 +7,7 @@ This assignment implements two fundamental computer vision techniques:
 
 ---
 
-## 🎨 Part I: Image Cartoonization
+## Part I: Image Cartoonization
 
 ### Objective
 Convert a regular photograph into a cartoon-style image with bold outlines and simplified colors.
@@ -38,7 +33,7 @@ Clean black outlines with flat, paint-like color regions
 
 ---
 
-## 🛣️ Part II: Road Lane Detection
+## Part II: Road Lane Detection
 
 ### Objective
 Detect and visualize lane markings on road images using the Hough Transform algorithm.
@@ -62,7 +57,7 @@ Road Image → Grayscale → Median Filter → Canny Edges
 
 #### 3. Hough Transform
 - **Line representation:** x·cos(θ) + y·sin(θ) = ρ
-- **Parameter space:** 180 angles (-90° to 90°), ~2940 ρ values
+- **Parameter space:** 180 angles (-90° to 90°)
 - **Voting:** Each edge pixel votes for all possible lines through it
 - **Accumulator:** 2D array storing votes for each (ρ, θ) combination
 
@@ -84,7 +79,7 @@ Original image with detected lane markings highlighted in green
 
 ---
 
-## 🔧 Key Parameters
+## Key Parameters
 
 ### Part I - Cartoonization
 | Parameter | Value | Purpose |
@@ -105,25 +100,10 @@ Original image with detected lane markings highlighted in green
 | NMS Theta Threshold | 5 | Min angle bins |
 | Max Peaks | 20 | Line candidates |
 
----
-
-## 📊 Results Summary
-
-### Part I Performance
-- ✅ Clean, continuous edge outlines
-- ✅ Flat, uniform color regions
-- ✅ Authentic cartoon aesthetic
-- ✅ Edge-preserving color simplification
-
-### Part II Performance
-- ✅ Detects 2-4 lane markings typically
-- ✅ Robust to road texture noise
-- ✅ Handles parallel lanes effectively
-- ✅ ROI masking reduces false positives by ~70%
 
 ---
 
-## 🔑 Key Concepts Learned
+## Key Concepts Learned
 
 ### Mathematical Foundations
 1. **Second-order derivatives** (Laplacian) for edge detection
@@ -145,63 +125,19 @@ Original image with detected lane markings highlighted in green
 
 ---
 
-## 📦 Dependencies
+##  Dependencies
 
 ```python
 import cv2              # OpenCV for image processing
 import numpy as np      # Numerical operations
 import matplotlib.pyplot as plt  # Visualization
+import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 ```
 
 ---
 
-## 🚀 Usage
 
-### Part I: Cartoonization
-```python
-# Load and preprocess
-img = cv2.imread("input.jpg")
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-gray_blur = cv2.medianBlur(gray, 9)
-
-# Create sketch
-edges = cv2.Laplacian(gray_blur, cv2.CV_8U, ksize=5)
-_, sketch = cv2.threshold(edges, 100, 255, cv2.THRESH_BINARY_INV)
-
-# Create painting
-small = cv2.resize(img, (w//2, h//2))
-for i in range(5):
-    small = cv2.bilateralFilter(small, d=3, sigmaColor=200, sigmaSpace=200)
-painting = cv2.resize(small, (w, h))
-
-# Combine
-cartoon = np.zeros_like(painting)
-cartoon[sketch == 255] = painting[sketch == 255]
-```
-
-### Part II: Lane Detection
-```python
-# Preprocess
-gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-gray_smoothed = cv2.medianBlur(gray, 7)
-edges = cv2.Canny(gray_smoothed, 50, 150)
-
-# Apply ROI
-region, mask = region_selection(edges)
-
-# Hough Transform
-accumulator = create_accumulator(region)
-peaks = find_peaks(accumulator, threshold_ratio=0.4, num_peaks=20)
-suppressed_peaks = non_maximum_suppression(peaks, rho_threshold=30, theta_threshold=5)
-
-# Draw results
-detected_lines = peaks_to_lines(suppressed_peaks, thetas, diag_len)
-result = draw_lines(img, detected_lines, color=(0, 255, 0), thickness=3)
-```
-
----
-
-## 💡 Tuning Guide
+## Tuning Guide
 
 ### If Cartoon Has Too Much Noise
 - Increase median kernel size (9 → 11)
@@ -224,35 +160,6 @@ result = draw_lines(img, detected_lines, color=(0, 255, 0), thickness=3)
 
 ---
 
-## 📝 Notes
-
-- OpenCV uses **BGR** format, not RGB (convert for matplotlib display)
-- Image coordinates: origin (0,0) at **top-left**, y increases downward
-- Hough accumulator index shift: `rho_idx = actual_rho + diag_len`
-- Bilateral filter is computationally expensive (hence downscaling)
-- ROI trapezoid shape depends on camera mount angle and field of view
-
----
-
-## 🎯 Future Enhancements
-
-### Part I
-- Adaptive thresholding for varying lighting
-- K-means color quantization
-- Multiple edge detection methods
-
-### Part II
-- Curved lane detection (polynomial Hough)
-- Video frame temporal consistency
-- Deep learning integration (CNN-based detection)
-- Real-time processing optimization
-
----
-
-## 📚 References
-
-- Canny, J. (1986). "A Computational Approach to Edge Detection"
-- Hough Transform: US Patent 3,069,654 (1962)
 - Tomasi, C. & Manduchi, R. (1998). "Bilateral Filtering for Gray and Color Images"
 
 ---

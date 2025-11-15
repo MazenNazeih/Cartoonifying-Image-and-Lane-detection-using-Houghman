@@ -158,10 +158,3 @@ import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
 - Increase peak threshold ratio (0.4 → 0.5)
 - Tighten NMS thresholds (30, 5 → 20, 3)
 
----
-
-- Tomasi, C. & Manduchi, R. (1998). "Bilateral Filtering for Gray and Color Images"
-
----
-
-**Assignment Complete** ✅
